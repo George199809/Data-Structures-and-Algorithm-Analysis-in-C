@@ -23,12 +23,15 @@ int legal(char ch) {
 	return 0;
 }
 void print(tree p) {
-	if(p->left != NULL) {
+	if(p->element < 48 || p->element >57) {
+		printf("(");
 		print(p->left);
-	}
-	printf("%c", p->element);
-	if(p->right != NULL)
+		printf("%c",p->element);
 		print(p->right);
+		printf(")");
+	}
+	else
+		printf("%c", p->element);
 }
 int main() {
 	char ch;
