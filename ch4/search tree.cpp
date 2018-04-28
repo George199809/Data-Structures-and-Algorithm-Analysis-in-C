@@ -77,10 +77,15 @@ int child_number(position p) {
 		n++;
 	return n;
 }
+/*
 void remove(element_type x, tree t) {
 	position p, rear, front;
 
 	p = find(x,t);
+	if(p == NULL) {
+		printf("Illegal Operation!\n");
+		return ;
+	}
 	if(child_number(p) == 0) {
 		front = find_previous(x,t);
 		if(x < front->element)
@@ -114,6 +119,37 @@ void remove(element_type x, tree t) {
 		free(rear);
 
 	}
+}*/
+/* 用递归写remove ，以增加少量风险来增加代码可读性。*/
+//key point:利用返回类型。
+position remove(element_type x, tree t) {
+	position temp;
+
+	if(t == NULL)
+		printf("Illegal Operation !\n");
+	else
+	if(x < t->element) 
+		t->left = remove(x,t->left);
+	else
+	if(x > t->element)
+		t->right = remove(x,t->right);
+	else
+	if(t->left && t->right) {
+		temp = find_min(t->right);
+		t->element = temp->element;
+		t->right = remove(temp->element,t->right);
+	}
+	else
+	if(t->left == NULL || t->right == NULL) {
+		temp = t;
+		if(t->left)
+			t = t->left;
+		else
+			t  = t->right;
+		free(temp);
+	}
+
+	return t;
 }
 
 void print(tree t) {
@@ -135,6 +171,6 @@ int main() {
 	insert(8,t);
 	insert(2,t);
 	insert(1,t);
-	remove(2,t);
+	t = remove(2,t);
 	print(t);
 }
